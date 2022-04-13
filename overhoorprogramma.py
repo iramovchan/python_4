@@ -131,6 +131,8 @@ def nieuwe_lijst_maken():
         for i in files:
             print_regel(i)
 
+        print_regel()
+        print_regel("Druk op q om terug te gaan")
         print_footer()
 
         lijst_naam = input("Voer in de naam van de nieuwe lijst: ")

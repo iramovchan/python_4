@@ -1,2 +1,2 @@
 gegevens=data
-appel=apple
+tafel=table
