@@ -80,7 +80,7 @@ def voeg_woorden_toe(woordenlijst, lijst_naam):
         print_regel("Druk op q om terug te gaan")
         print_footer()
 
-        nieuwe_wooord = input("Nieuwe woord: ")
+        nieuwe_wooord = input("Nieuw woord: ")
 
         if nieuwe_wooord == 'q':
             doorgaan = False
@@ -161,14 +161,14 @@ def nieuwe_lijst_maken():
                 doorgaan = False
 
 
-def overhoren(woordenlijst):
+def overhoren(woordenlijst, lijst_naam):
     doorgaan = True
     woordenlijst_0 = woordenlijst.copy()
     while doorgaan:
         leeg_scherm()
         print_header()
         if len(woordenlijst_0) == 0:
-            print_regel("Er zijn geen woorden in dit woordenlijst.")
+            print_regel("Er zijn geen woorden in deze woordenlijst.")
             print_regel("Druk ENTER om terug te gaan")
             print_footer()
             weg = input("Uw keuze: ")
@@ -177,6 +177,8 @@ def overhoren(woordenlijst):
         else:
             woord, vertaling = random.choice(list(woordenlijst_0.items()))
             vertaling = vertaling.replace("\n", "")
+            print_regel(f"Huidige lijst: {lijst_naam}")
+            print_regel()
             print_regel("Woord: {} Vertaling: ".format(woord))
             print_footer()
 
@@ -281,7 +283,7 @@ def main():
         elif keuze == TOEVOEGEN:
             voeg_woorden_toe(woordenlijst, STANDAARD_LIJST)
         elif keuze == OVERHOREN:
-            overhoren(woordenlijst)
+            overhoren(woordenlijst, STANDAARD_LIJST)
         elif keuze == 'a':
             toon_alle_woorden(woordenlijst, STANDAARD_LIJST)
         elif keuze == 'v':
