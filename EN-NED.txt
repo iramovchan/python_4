@@ -1,3 +1,2 @@
-data=gegevens
 screen=scherm
 population=populatie

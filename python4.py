@@ -16,36 +16,41 @@ STOPPEN = 'q'
 TOEVOEGEN = 't'
 
 
+def print_alle_woordenlijsten():
+    print_regel("Alle woordenlijsten: ")
+    print_regel()
+    files = []
+
+    for file in os.listdir("."):
+        if file.endswith(".txt"):
+            files.append(file)
+
+    for i in files:
+        print_regel(i)
+
+    print_regel()
+
+
 def kies_lijst(lijst_naam):
-    doorgaan = True
-    while doorgaan:
+    leeg_scherm()
+    print_header()
+    print_regel(f"Huidige lijst: {lijst_naam}")
+    print_alle_woordenlijsten()
+    print_regel("Druk op q om terug te gaan")
+    print_footer()
+
+    while (STANDAARD_LIJST := input("Kies een lijst: ")) != STOPPEN:
+        lijst_naam = STANDAARD_LIJST
+
         leeg_scherm()
         print_header()
         print_regel(f"Huidige lijst: {lijst_naam}")
-        print_regel("Alle woordenlijsten: ")
-        print_regel()
-        files = []
-
-        for file in os.listdir("."):
-            if file.endswith(".txt"):
-                files.append(file)
-
-        for i in files:
-            print_regel(i)
-
-        print_regel()
+        print_alle_woordenlijsten()
         print_regel("Druk op q om terug te gaan")
-
         print_footer()
 
-        STANDAARD_LIJST = input("Kies een lijst: ")
-
-        if STANDAARD_LIJST.lower() == 'q':
-            STANDAARD_LIJST = lijst_naam
-            doorgaan = False
-
-        else:
-            lijst_naam = STANDAARD_LIJST
+    else:
+        STANDAARD_LIJST = lijst_naam
 
     return STANDAARD_LIJST
 
@@ -69,37 +74,37 @@ def lees_woordenlijst(bestandsnaam):
 
 
 def voeg_woorden_toe(woordenlijst, lijst_naam):
-    doorgaan = True
-    while doorgaan:
+    leeg_scherm()
+    print_header()
+    print_regel(f"Huidige lijst: {lijst_naam}")
+    print_regel()
+    print_regel("Om woorden toe te voegen, schrijf het woord, = en vertaling. Zonder spaties")
+    print_regel()
+    print_regel("Druk op q om terug te gaan")
+    print_footer()
+
+    while (nieuwe_woord := input("Uw keuze: ")) != STOPPEN:
+        woord, vertaling = nieuwe_woord.split(SCHEIDER)
+        woordenlijst[woord] = vertaling + "\n"
+
         leeg_scherm()
         print_header()
-        print_regel(f"Huidige lijst: {lijst_naam}")
+        print_regel("{} toegevoegd".format(nieuwe_woord))
         print_regel()
-        print_regel("Om woorden toe te voegen, schrijf het woord, = en vertaling. Zonder spaties")
-        print_regel()
+        print_regel("Druk ENTER om door te gaan.")
         print_regel("Druk op q om terug te gaan")
         print_footer()
-
-        nieuwe_wooord = input("Nieuw woord: ")
-
-        if nieuwe_wooord == 'q':
-            doorgaan = False
-
-        else:
-            woord, vertaling = nieuwe_wooord.split(SCHEIDER)
-            woordenlijst[woord] = vertaling + "\n"
-
+        if (keuze := input("Uw keuze: ")) != STOPPEN:
             leeg_scherm()
             print_header()
-            print_regel("{} toegevoegd".format(nieuwe_wooord))
+            print_regel(f"Huidige lijst: {lijst_naam}")
             print_regel()
-            print_regel("Druk ENTER om door te gaan.")
+            print_regel("Om woorden toe te voegen, schrijf het woord, = en vertaling. Zonder spaties")
+            print_regel()
             print_regel("Druk op q om terug te gaan")
             print_footer()
-
-            keuze = input("Uw keuze: ")
-            if keuze == 'q':
-                doorgaan = False
+        else:
+            break
 
     schrijf_woordenlijst(lijst_naam, woordenlijst)
 
@@ -116,55 +121,44 @@ def schrijf_woordenlijst(bestandsnaam, woordenlijst):
 
 
 def nieuwe_lijst_maken():
-    doorgaan = True
-    while doorgaan:
+    leeg_scherm()
+    print_header()
+    print_alle_woordenlijsten()
+    print_regel("Druk op q om terug te gaan")
+    print_footer()
+    keuze = ''
+    while (lijst_naam := input("Voer in de naam van de nieuwe lijst: ")) != STOPPEN and (keuze != "q"):
+
         leeg_scherm()
         print_header()
-        print_regel("Alle woordenlijsten: ")
-        print_regel()
-        files = []
 
-        for file in os.listdir("."):
-            if file.endswith(".txt"):
-                files.append(file)
+        if lijst_naam.endswith(".txt"):
+            nieuwe_lijst = open(lijst_naam, 'w')
+            print_regel("{} toegevoegd".format(lijst_naam))
 
-        for i in files:
-            print_regel(i)
+        else:
+            nieuwe_lijst = open(lijst_naam + ".txt", 'w')
+            print_regel("{} toegevoegd".format(lijst_naam + ".txt"))
 
         print_regel()
+        print_regel("Druk ENTER om door te gaan.")
         print_regel("Druk op q om terug te gaan")
         print_footer()
 
-        lijst_naam = input("Voer in de naam van de nieuwe lijst: ")
-        if lijst_naam.lower() == 'q':
-            doorgaan = False
-        else:
+        keuze = input("Uw keuze: ")
 
-            leeg_scherm()
-            print_header()
-
-            if lijst_naam.endswith(".txt"):
-                nieuwe_lijst = open(lijst_naam, 'w')
-                print_regel("{} toegevoegd".format(lijst_naam))
-
-            else:
-                nieuwe_lijst = open(lijst_naam + ".txt", 'w')
-                print_regel("{} toegevoegd".format(lijst_naam + ".txt"))
-
-            print_regel()
-            print_regel("Druk ENTER om door te gaan.")
-            print_regel("Druk op q om terug te gaan")
-            print_footer()
-
-            keuze = input("Uw keuze: ")
-            if keuze == 'q':
-                doorgaan = False
+        leeg_scherm()
+        print_header()
+        print_alle_woordenlijsten()
+        print_regel("Druk op q om terug te gaan")
+        print_footer()
 
 
 def overhoren(woordenlijst, lijst_naam):
-    doorgaan = True
     woordenlijst_0 = woordenlijst.copy()
-    while doorgaan:
+    antwoord = ''
+    keuze = ''
+    while antwoord != STOPPEN and keuze != STOPPEN:
         leeg_scherm()
         print_header()
         if len(woordenlijst_0) == 0:
@@ -172,7 +166,7 @@ def overhoren(woordenlijst, lijst_naam):
             print_regel("Druk ENTER om terug te gaan")
             print_footer()
             weg = input("Uw keuze: ")
-            doorgaan = False
+            antwoord = 'q'
 
         else:
             woord, vertaling = random.choice(list(woordenlijst_0.items()))
@@ -187,9 +181,7 @@ def overhoren(woordenlijst, lijst_naam):
             leeg_scherm()
             print_header()
 
-            if antwoord.lower() == 'q':
-                doorgaan = False
-            else:
+            if antwoord != 'q':
                 if antwoord.lower() == vertaling:
                     print_regel("Het is het goede antwoord :]")
                     del woordenlijst_0[woord]
@@ -202,13 +194,38 @@ def overhoren(woordenlijst, lijst_naam):
                 print_regel("Druk op q om terug te gaan")
                 print_footer()
                 keuze = input("Uw keuze: ")
-                if keuze.lower() == 'q':
-                    doorgaan = False
 
 
 def verwijder_woord(woordenlijst, lijst_naam):
-    doorgaan = True
-    while doorgaan:
+    leeg_scherm()
+    print_header()
+    print_regel(f"Huidige lijst: {lijst_naam}")
+    print_regel()
+    print_regel("Alle woorden in dit woordenlijst: ")
+    for key, value in woordenlijst.items():
+        value = value.replace("\n", "")
+        print_regel(key + " = " + value)
+
+    print_regel()
+    print_regel("Druk op q om terug te gaan")
+    print_footer()
+
+    while (woord := input("Welke woord wilt u verwijderen? ")) != STOPPEN:
+        if woord in woordenlijst:
+
+            leeg_scherm()
+            print_header()
+            print_regel("Weet u zeker dat u dit woord wilt verwijderen? (ja/nee)")
+            print_footer()
+            keuze = input("Uw keuze: ")
+
+            if keuze.lower() == "ja":
+                del woordenlijst[woord]
+
+        else:
+            print("Deze woord staat niet in dit woordenlijst")
+            keuze = input("Druk ENTER om door te gaan ")
+
         leeg_scherm()
         print_header()
         print_regel(f"Huidige lijst: {lijst_naam}")
@@ -222,32 +239,13 @@ def verwijder_woord(woordenlijst, lijst_naam):
         print_regel("Druk op q om terug te gaan")
         print_footer()
 
-        woord = input("Welke woord wilt u verwijderen? ")
-        if woord == 'q':
-            doorgaan = False
-
-        else:
-            if woord in woordenlijst:
-
-                leeg_scherm()
-                print_header()
-                print_regel("Weet u zeker dat u dit woord wilt verwijderen? (ja/nee)")
-                print_footer()
-                keuze = input("Uw keuze: ")
-
-                if keuze.lower() == "ja":
-                    del woordenlijst[woord]
-
-            else:
-                print("Deze woord staat niet in dit woordenlijst")
-                keuze = input("Druk ENTER om door te gaan ")
-
     schrijf_woordenlijst(lijst_naam, woordenlijst)
 
     return woordenlijst
 
 
 def toon_alle_woorden(woordenlijst, lijst_naam):
+
     print_header()
     print_regel(f"Huidige lijst: {lijst_naam}")
     print_regel()
@@ -267,14 +265,11 @@ def main():
     print_header()
     print_menu(STANDAARD_LIJST)
     print_footer()
-    doorgaan = True
 
-    while doorgaan:
-        woordenlijst = lees_woordenlijst(STANDAARD_LIJST)
-        # print(woordenlijst)
-
-        keuze = input("Uw keuze: ")
+    while (keuze := input('Uw keuze: ')) != STOPPEN:
         leeg_scherm()
+
+        woordenlijst = lees_woordenlijst(STANDAARD_LIJST)
 
         if keuze == "n":
             nieuwe_lijst_maken()
@@ -294,9 +289,8 @@ def main():
         print_menu(STANDAARD_LIJST)
         print_footer()
 
-        if keuze == STOPPEN:
-            print_afscheid()
-            doorgaan = False
+    leeg_scherm()
+    print_afscheid()
 
 
 def print_regel(inhoud=''):
